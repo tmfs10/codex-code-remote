@@ -6,6 +6,7 @@
 const EventEmitter = require('events');
 const EmailListener = require('./email-listener');
 const ClaudeCommandBridge = require('./claude-command-bridge');
+const TmuxInjector = require('./tmux-injector');
 const ClipboardAutomation = require('../automation/clipboard-automation');
 const SimpleAutomation = require('../automation/simple-automation');
 const ClaudeAutomation = require('../automation/claude-automation');
@@ -31,6 +32,15 @@ class CommandRelayService extends EventEmitter {
         
         this._ensureDirectories();
         this._loadState();
+    }
+
+    _appendCompletionMarker(command) {
+        if (!command) return command;
+        if (/Telegram done/i.test(command)) {
+            return command;
+        }
+        const suffix = '\n\n After task is completed, write "Telegram done" here';
+        return `${command}${suffix}`;
     }
 
     _ensureDirectories() {
@@ -190,6 +200,26 @@ class CommandRelayService extends EventEmitter {
         commandItem.executedAt = new Date().toISOString();
 
         try {
+            const commandToSend = this._appendCompletionMarker(commandItem.command);
+            // Prefer tmux injection when session has a tmux target
+            if (commandItem.session?.tmuxSession) {
+                const tmuxInjector = new TmuxInjector(this.logger, commandItem.session.tmuxSession);
+                const tmuxResult = await tmuxInjector.injectCommandFull(commandItem.sessionId, commandToSend);
+                if (tmuxResult.success) {
+                    commandItem.status = 'completed';
+                    commandItem.completedAt = new Date().toISOString();
+                    
+                    if (this.emailListener) {
+                        await this.emailListener.updateSessionCommandCount(commandItem.sessionId);
+                    }
+                    
+                    this.logger.info(`Command ${commandItem.id} executed successfully via tmux`);
+                    this.emit('commandExecuted', commandItem);
+                    return;
+                }
+                this.logger.warn(`Tmux injection failed for ${commandItem.id}, falling back to Codex automation: ${tmuxResult.error}`);
+            }
+
             // Check if Codex CLI process is running
             const codexProcess = await this._findCodexProcess();
             
@@ -198,7 +228,7 @@ class CommandRelayService extends EventEmitter {
             }
 
             // Execute command - try multiple methods
-            const success = await this._sendCommandToCodex(commandItem.command, codexProcess, commandItem.sessionId);
+            const success = await this._sendCommandToCodex(commandToSend, codexProcess, commandItem.sessionId);
             
             if (success) {
                 commandItem.status = 'completed';
@@ -260,7 +290,8 @@ class CommandRelayService extends EventEmitter {
                     this.logger.debug('Found Codex process:', processLine);
                     resolve({
                         pid,
-                        command: processLine
+                        command: processLine,
+                        available: true
                     });
                 } else {
                     // If no process found, assume Codex can be accessed via desktop automation

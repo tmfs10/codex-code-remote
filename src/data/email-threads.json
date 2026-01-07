@@ -1,0 +1,18 @@
+{
+  "codex-code": {
+    "sessionId": "d070f759-971b-4bd0-9a59-abd3900b3bc1",
+    "token": "0D46VH9Z",
+    "tmuxSession": "codex-code",
+    "tmuxIdentity": "1767775376",
+    "subject": "[Codex-Code-Remote #0D46VH9Z] Codex Session - Claude-Code-Remote | codex-code",
+    "rootMessageId": "<d070f759-971b-4bd0-9a59-abd3900b3bc1-1767775383546@codex-code-remote>",
+    "lastMessageId": "<d070f759-971b-4bd0-9a59-abd3900b3bc1-1767775423584@codex-code-remote>",
+    "references": [
+      "<d070f759-971b-4bd0-9a59-abd3900b3bc1-1767775383546@codex-code-remote>",
+      "<d070f759-971b-4bd0-9a59-abd3900b3bc1-1767775415547@codex-code-remote>",
+      "<d070f759-971b-4bd0-9a59-abd3900b3bc1-1767775423584@codex-code-remote>"
+    ],
+    "createdAt": "2026-01-07T08:43:03.536Z",
+    "updatedAt": "2026-01-07T08:43:45.759Z"
+  }
+}

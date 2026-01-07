@@ -538,5 +538,50 @@
     "sessionId": "10cd6e52-91a8-476a-af0a-1fe2c2929ab6",
     "tmuxSession": "claude-hook-test",
     "description": "completed - Claude-Code-Remote"
+  },
+  "ARU3OFDB": {
+    "type": "pty",
+    "createdAt": 1767773970,
+    "expiresAt": 1767860370,
+    "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+    "sessionId": "f4160170-dcfa-4e8e-871c-981c1119faa7",
+    "tmuxSession": "codex-code",
+    "description": "completed - Claude-Code-Remote"
+  },
+  "55QLRUC9": {
+    "type": "pty",
+    "createdAt": 1767774698,
+    "expiresAt": 1767861098,
+    "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+    "sessionId": "3b54388b-e1fb-4e15-9fcc-c5c726228609",
+    "tmuxSession": "codex-code",
+    "description": "completed - Claude-Code-Remote"
+  },
+  "21QOGFMP": {
+    "type": "pty",
+    "createdAt": 1767774847,
+    "expiresAt": 1767861247,
+    "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+    "sessionId": "9edb9b33-d5a2-43c4-8314-ac96d6e09d72",
+    "tmuxSession": "codex-code",
+    "description": "completed - Claude-Code-Remote"
+  },
+  "I62PCF0S": {
+    "type": "pty",
+    "createdAt": 1767775364,
+    "expiresAt": 1767861764,
+    "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+    "sessionId": "8ef0ff5f-1420-4688-8bb4-461ccb09dd39",
+    "tmuxSession": "codex-code",
+    "description": "completed - Claude-Code-Remote"
+  },
+  "0D46VH9Z": {
+    "type": "pty",
+    "createdAt": 1767775423,
+    "expiresAt": 1767861823,
+    "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+    "sessionId": "d070f759-971b-4bd0-9a59-abd3900b3bc1",
+    "tmuxSession": "codex-code",
+    "description": "completed - Claude-Code-Remote"
   }
 }

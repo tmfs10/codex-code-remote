@@ -1,0 +1,20 @@
+{
+  "id": "3b54388b-e1fb-4e15-9fcc-c5c726228609",
+  "token": "55QLRUC9",
+  "type": "pty",
+  "created": "2026-01-07T08:25:58.662Z",
+  "expires": "2026-01-08T08:31:38.543Z",
+  "createdAt": 1767774358,
+  "expiresAt": 1767861098,
+  "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+  "notification": {
+    "type": "completed",
+    "project": "Claude-Code-Remote",
+    "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction"
+  },
+  "status": "waiting",
+  "commandCount": 2,
+  "maxCommands": 10,
+  "tmuxSession": "codex-code",
+  "lastCommand": "2026-01-07T08:27:02.675Z"
+}

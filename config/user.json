@@ -12,7 +12,7 @@
   },
   "channels": {
     "desktop": {
-      "enabled": true,
+      "enabled": false,
       "priority": 1
     }
   },

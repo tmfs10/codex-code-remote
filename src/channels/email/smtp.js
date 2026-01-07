@@ -18,6 +18,7 @@ class EmailChannel extends NotificationChannel {
         this.sessionsDir = path.join(__dirname, '../../data/sessions');
         this.templatesDir = path.join(__dirname, '../../assets/email-templates');
         this.sentMessagesPath = config.sentMessagesPath || path.join(__dirname, '../../data/sent-messages.json');
+        this.threadMapPath = config.threadMapPath || path.join(__dirname, '../../data/email-threads.json');
         this.tmuxMonitor = new TmuxMonitor();
         
         this._ensureDirectories();
@@ -42,6 +43,10 @@ class EmailChannel extends NotificationChannel {
         }
         if (!fs.existsSync(this.templatesDir)) {
             fs.mkdirSync(this.templatesDir, { recursive: true });
+        }
+        const threadDir = path.dirname(this.threadMapPath);
+        if (!fs.existsSync(threadDir)) {
+            fs.mkdirSync(threadDir, { recursive: true });
         }
     }
 
@@ -97,6 +102,26 @@ class EmailChannel extends NotificationChannel {
         }
     }
 
+    _getTmuxSessionIdentity(tmuxSession) {
+        if (!tmuxSession) return null;
+        try {
+            const sessionCreated = execSync(`tmux display-message -t ${tmuxSession} -p "#{session_created}"`, {
+                encoding: 'utf8',
+                stdio: ['ignore', 'pipe', 'ignore']
+            }).trim();
+            if (sessionCreated) {
+                return sessionCreated;
+            }
+            const sessionId = execSync(`tmux display-message -t ${tmuxSession} -p "#{session_id}"`, {
+                encoding: 'utf8',
+                stdio: ['ignore', 'pipe', 'ignore']
+            }).trim();
+            return sessionId || null;
+        } catch (error) {
+            return null;
+        }
+    }
+
     async _sendImpl(notification) {
         if (!this.transporter) {
             throw new Error('Email transporter not initialized');
@@ -106,12 +131,10 @@ class EmailChannel extends NotificationChannel {
             throw new Error('Email recipient not configured');
         }
 
-        // Generate session ID and Token
-        const sessionId = uuidv4();
-        const token = this._generateToken();
+        // Determine tmux session name for threading
+        const tmuxSession = notification.metadata?.tmuxSession || this._getCurrentTmuxSession() || 'codex-code-remote';
+        const tmuxIdentity = this._getTmuxSessionIdentity(tmuxSession);
         
-        // Get current tmux session and conversation content
-        const tmuxSession = this._getCurrentTmuxSession();
         if (tmuxSession && !notification.metadata) {
             const conversation = this.tmuxMonitor.getRecentConversation(tmuxSession);
             const fullTrace = this.tmuxMonitor.getFullExecutionTrace(tmuxSession);
@@ -122,16 +145,72 @@ class EmailChannel extends NotificationChannel {
                 fullExecutionTrace: fullTrace
             };
         }
-        
-        // Create session record
-        await this._createSession(sessionId, notification, token);
+
+        // Load or create per-tmux email thread
+        const threadMap = this._loadThreadMap();
+        let thread = threadMap[tmuxSession];
+        let isNewThread = false;
+        let sessionId;
+        let token;
+
+        if (thread && tmuxIdentity && thread.tmuxIdentity !== tmuxIdentity) {
+            delete threadMap[tmuxSession];
+            thread = null;
+        }
+
+        if (thread && thread.sessionId && thread.token && this._isSessionActive(thread.sessionId)) {
+            sessionId = thread.sessionId;
+            token = thread.token;
+            this._refreshSession(thread.sessionId, notification, tmuxSession);
+            this._ensureSessionMapEntry(token, sessionId, tmuxSession, notification);
+        } else {
+            sessionId = uuidv4();
+            token = this._generateToken();
+            await this._createSession(sessionId, notification, token, tmuxSession);
+            thread = {
+                sessionId,
+                token,
+                tmuxSession,
+                tmuxIdentity: tmuxIdentity || null,
+                subject: null,
+                rootMessageId: null,
+                lastMessageId: null,
+                references: [],
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            threadMap[tmuxSession] = thread;
+            isNewThread = true;
+        }
 
         // Generate email content
         const emailContent = this._generateEmailContent(notification, sessionId, token);
+        if (thread && thread.subject) {
+            emailContent.subject = thread.subject;
+        }
         
         // Generate unique Message-ID
         const messageId = `<${sessionId}-${Date.now()}@codex-code-remote>`;
-        
+
+        const headers = {
+            'X-Codex-Code-Remote-Session-ID': sessionId,
+            'X-Codex-Code-Remote-Type': notification.type,
+            // Backwards compatibility
+            'X-Claude-Code-Remote-Session-ID': sessionId,
+            'X-Claude-Code-Remote-Type': notification.type
+        };
+
+        if (thread && thread.rootMessageId) {
+            const inReplyTo = thread.lastMessageId || thread.rootMessageId;
+            const refs = new Set(thread.references || []);
+            refs.add(thread.rootMessageId);
+            if (thread.lastMessageId) {
+                refs.add(thread.lastMessageId);
+            }
+            headers['In-Reply-To'] = inReplyTo;
+            headers['References'] = Array.from(refs).join(' ');
+        }
+
         const mailOptions = {
             from: this.config.from || this.config.smtp.auth.user,
             to: this.config.to,
@@ -140,13 +219,7 @@ class EmailChannel extends NotificationChannel {
             text: emailContent.text,
             messageId: messageId,
             // Add custom headers for reply recognition
-            headers: {
-                'X-Codex-Code-Remote-Session-ID': sessionId,
-                'X-Codex-Code-Remote-Type': notification.type,
-                // Backwards compatibility
-                'X-Claude-Code-Remote-Session-ID': sessionId,
-                'X-Claude-Code-Remote-Type': notification.type
-            }
+            headers
         };
 
         try {
@@ -155,17 +228,41 @@ class EmailChannel extends NotificationChannel {
             
             // Track sent message
             await this._trackSentMessage(messageId, sessionId, token);
+
+            if (thread) {
+                if (!thread.subject) {
+                    thread.subject = emailContent.subject;
+                }
+                if (tmuxIdentity) {
+                    thread.tmuxIdentity = tmuxIdentity;
+                }
+                if (!thread.rootMessageId) {
+                    thread.rootMessageId = messageId;
+                }
+                const refs = new Set(thread.references || []);
+                refs.add(thread.rootMessageId);
+                refs.add(messageId);
+                thread.references = Array.from(refs).slice(-20);
+                thread.lastMessageId = messageId;
+                thread.updatedAt = new Date().toISOString();
+                threadMap[tmuxSession] = thread;
+                this._saveThreadMap(threadMap);
+            }
             
             return true;
         } catch (error) {
             this.logger.error('Failed to send email:', error.message);
             // Clean up failed session
-            await this._removeSession(sessionId);
+            if (isNewThread) {
+                await this._removeSession(sessionId);
+                delete threadMap[tmuxSession];
+                this._saveThreadMap(threadMap);
+            }
             return false;
         }
     }
 
-    async _createSession(sessionId, notification, token) {
+    async _createSession(sessionId, notification, token, tmuxSession) {
         const session = {
             id: sessionId,
             token: token,
@@ -182,14 +279,24 @@ class EmailChannel extends NotificationChannel {
             },
             status: 'waiting',
             commandCount: 0,
-            maxCommands: 10
+            maxCommands: 10,
+            tmuxSession: tmuxSession
         };
 
         const sessionFile = path.join(this.sessionsDir, `${sessionId}.json`);
         fs.writeFileSync(sessionFile, JSON.stringify(session, null, 2));
         
-        // Also save in PTY mapping format
-        const sessionMapPath = process.env.SESSION_MAP_PATH || path.join(__dirname, '../../data/session-map.json');
+        this._ensureSessionMapEntry(token, sessionId, tmuxSession, notification);
+        
+        this.logger.debug(`Session created: ${sessionId}, Token: ${token}`);
+    }
+
+    _getSessionMapPath() {
+        return process.env.SESSION_MAP_PATH || path.join(__dirname, '../../data/session-map.json');
+    }
+
+    _ensureSessionMapEntry(token, sessionId, tmuxSession, notification) {
+        const sessionMapPath = this._getSessionMapPath();
         let sessionMap = {};
         if (fs.existsSync(sessionMapPath)) {
             try {
@@ -198,10 +305,7 @@ class EmailChannel extends NotificationChannel {
                 sessionMap = {};
             }
         }
-        
-        // Use passed tmux session name or detect current session
-        let tmuxSession = notification.metadata?.tmuxSession || this._getCurrentTmuxSession() || 'codex-code-remote';
-        
+
         sessionMap[token] = {
             type: 'pty',
             createdAt: Math.floor(Date.now() / 1000),
@@ -211,16 +315,65 @@ class EmailChannel extends NotificationChannel {
             tmuxSession: tmuxSession,
             description: `${notification.type} - ${notification.project}`
         };
-        
-        // Ensure directory exists
+
         const mapDir = path.dirname(sessionMapPath);
         if (!fs.existsSync(mapDir)) {
             fs.mkdirSync(mapDir, { recursive: true });
         }
-        
+
         fs.writeFileSync(sessionMapPath, JSON.stringify(sessionMap, null, 2));
-        
-        this.logger.debug(`Session created: ${sessionId}, Token: ${token}`);
+    }
+
+    _loadThreadMap() {
+        if (!fs.existsSync(this.threadMapPath)) {
+            return {};
+        }
+        try {
+            return JSON.parse(fs.readFileSync(this.threadMapPath, 'utf8'));
+        } catch (error) {
+            this.logger.warn('Failed to read email thread map, creating new one');
+            return {};
+        }
+    }
+
+    _saveThreadMap(threadMap) {
+        fs.writeFileSync(this.threadMapPath, JSON.stringify(threadMap, null, 2));
+    }
+
+    _isSessionActive(sessionId) {
+        const sessionFile = path.join(this.sessionsDir, `${sessionId}.json`);
+        if (!fs.existsSync(sessionFile)) {
+            return false;
+        }
+        try {
+            const sessionData = JSON.parse(fs.readFileSync(sessionFile, 'utf8'));
+            const expires = new Date(sessionData.expires);
+            return Date.now() < expires.getTime();
+        } catch (error) {
+            return false;
+        }
+    }
+
+    _refreshSession(sessionId, notification, tmuxSession) {
+        const sessionFile = path.join(this.sessionsDir, `${sessionId}.json`);
+        if (!fs.existsSync(sessionFile)) {
+            return;
+        }
+        try {
+            const sessionData = JSON.parse(fs.readFileSync(sessionFile, 'utf8'));
+            const nextExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+            sessionData.expires = nextExpiry.toISOString();
+            sessionData.expiresAt = Math.floor(nextExpiry.getTime() / 1000);
+            sessionData.notification = {
+                type: notification.type,
+                project: notification.project,
+                message: notification.message
+            };
+            sessionData.tmuxSession = tmuxSession;
+            fs.writeFileSync(sessionFile, JSON.stringify(sessionData, null, 2));
+        } catch (error) {
+            this.logger.warn(`Failed to refresh session ${sessionId}: ${error.message}`);
+        }
     }
 
     async _removeSession(sessionId) {
@@ -279,18 +432,13 @@ class EmailChannel extends NotificationChannel {
             claudeResponse = notification.metadata.claudeResponse || '';
         }
         
-        // Limit user question length for title
+        // Limit user question length for display only
         const maxQuestionLength = 30;
         const shortQuestion = userQuestion.length > maxQuestionLength ? 
             userQuestion.substring(0, maxQuestionLength) + '...' : userQuestion;
-        
-        // Generate more distinctive title
-        let enhancedSubject = template.subject;
-        if (shortQuestion) {
-            enhancedSubject = enhancedSubject.replace('{{project}}', `${projectDir} | ${shortQuestion}`);
-        } else {
-            enhancedSubject = enhancedSubject.replace('{{project}}', projectDir);
-        }
+
+        const tmuxSessionLabel = notification.metadata?.tmuxSession || '';
+        const threadLabel = tmuxSessionLabel ? `${projectDir} | ${tmuxSessionLabel}` : projectDir;
         
         // Check if execution trace should be included
         const includeExecutionTrace = this.config.includeExecutionTrace !== false; // Default to true
@@ -334,6 +482,8 @@ class EmailChannel extends NotificationChannel {
             claudeResponse: claudeResponse || notification.message,
             projectDir: projectDir,
             shortQuestion: shortQuestion || 'No specific question',
+            tmuxSession: tmuxSessionLabel || 'default',
+            threadLabel: threadLabel,
             subagentActivities: notification.metadata?.subagentActivities || '',
             executionTraceSection: executionTraceSection,
             executionTraceText: executionTraceText,
@@ -341,7 +491,7 @@ class EmailChannel extends NotificationChannel {
                 'No execution trace available. This may occur if the task completed very quickly or if tmux session logging is not enabled.'
         };
 
-        let subject = enhancedSubject;
+        let subject = template.subject;
         let html = template.html;
         let text = template.text;
 
@@ -369,7 +519,7 @@ class EmailChannel extends NotificationChannel {
         // Default templates
         const templates = {
             completed: {
-                subject: '[Codex-Code-Remote #{{token}}] Codex Task Completed - {{project}}',
+                subject: '[Codex-Code-Remote #{{token}}] Codex Session - {{threadLabel}}',
                 html: `
                 <div style="font-family: 'Consolas', 'Monaco', 'Courier New', monospace; background-color: #f5f5f5; padding: 0; margin: 0;">
                     <div style="max-width: 900px; margin: 0 auto; background-color: #1e1e1e; border: 1px solid #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">
@@ -464,7 +614,7 @@ Security Note: Please do not forward this email, session will automatically expi
                 `
             },
             waiting: {
-                subject: '[Codex-Code-Remote #{{token}}] Codex Waiting for Input - {{project}}',
+                subject: '[Codex-Code-Remote #{{token}}] Codex Session - {{threadLabel}}',
                 html: `
                 <div style="font-family: 'Consolas', 'Monaco', 'Courier New', monospace; background-color: #f5f5f5; padding: 0; margin: 0;">
                     <div style="max-width: 900px; margin: 0 auto; background-color: #1e1e1e; border: 1px solid #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">

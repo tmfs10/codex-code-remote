@@ -1,0 +1,255 @@
+{
+  "commandQueue": [
+    {
+      "id": "mk3qpb49zm08dtdwros",
+      "sessionId": "f4160170-dcfa-4e8e-871c-981c1119faa7",
+      "command": "Write a hello world script in rust",
+      "email": {
+        "from": "sidgalt@gmail.com",
+        "subject": "Re: [Codex-Code-Remote #ARU3OFDB] Codex Task Completed - Claude-Code-Remote | print 1 to 1000 instead",
+        "date": "2026-01-07T08:11:38.000Z"
+      },
+      "session": {
+        "id": "f4160170-dcfa-4e8e-871c-981c1119faa7",
+        "token": "ARU3OFDB",
+        "type": "pty",
+        "created": "2026-01-07T08:11:13.923Z",
+        "expires": "2026-01-08T08:11:13.923Z",
+        "createdAt": 1767773473,
+        "expiresAt": 1767859873,
+        "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+        "notification": {
+          "type": "completed",
+          "project": "Claude-Code-Remote",
+          "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction"
+        },
+        "status": "waiting",
+        "commandCount": 0,
+        "maxCommands": 10,
+        "tmuxSession": "codex-code"
+      },
+      "queuedAt": "2026-01-07T08:11:46.185Z",
+      "status": "failed",
+      "retries": 3,
+      "maxRetries": 3,
+      "executedAt": "2026-01-07T08:12:00.289Z",
+      "error": "Codex CLI not available",
+      "failedAt": "2026-01-07T08:12:00.414Z",
+      "retryAt": "2026-01-07T08:13:55.388Z"
+    },
+    {
+      "id": "mk3qupionxek3xbq2m",
+      "sessionId": "f4160170-dcfa-4e8e-871c-981c1119faa7",
+      "command": "Write hello world script in rust",
+      "email": {
+        "from": "sidgalt@gmail.com",
+        "subject": "Re: [Codex-Code-Remote #ARU3OFDB] Codex Task Completed - Claude-Code-Remote | print 1 to 1000 instead",
+        "date": "2026-01-07T08:15:53.000Z"
+      },
+      "session": {
+        "id": "f4160170-dcfa-4e8e-871c-981c1119faa7",
+        "token": "ARU3OFDB",
+        "type": "pty",
+        "created": "2026-01-07T08:11:13.923Z",
+        "expires": "2026-01-08T08:15:04.771Z",
+        "createdAt": 1767773473,
+        "expiresAt": 1767860104,
+        "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+        "notification": {
+          "type": "completed",
+          "project": "Claude-Code-Remote",
+          "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction"
+        },
+        "status": "waiting",
+        "commandCount": 0,
+        "maxCommands": 10,
+        "tmuxSession": "codex-code"
+      },
+      "queuedAt": "2026-01-07T08:15:58.128Z",
+      "status": "failed",
+      "retries": 3,
+      "maxRetries": 3,
+      "executedAt": "2026-01-07T08:16:12.034Z",
+      "error": "Codex CLI not available",
+      "failedAt": "2026-01-07T08:16:12.149Z",
+      "retryAt": "2026-01-07T08:18:07.164Z"
+    },
+    {
+      "id": "mk3qzn1uem44o9jvwzf",
+      "sessionId": "f4160170-dcfa-4e8e-871c-981c1119faa7",
+      "command": "Write hello world script in rust",
+      "email": {
+        "from": "sidgalt@gmail.com",
+        "subject": "Re: [Codex-Code-Remote #ARU3OFDB] Codex Task Completed - Claude-Code-Remote | print 1 to 1000 instead",
+        "date": "2026-01-07T08:19:43.000Z"
+      },
+      "session": {
+        "id": "f4160170-dcfa-4e8e-871c-981c1119faa7",
+        "token": "ARU3OFDB",
+        "type": "pty",
+        "created": "2026-01-07T08:11:13.923Z",
+        "expires": "2026-01-08T08:19:30.646Z",
+        "createdAt": 1767773473,
+        "expiresAt": 1767860370,
+        "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+        "notification": {
+          "type": "completed",
+          "project": "Claude-Code-Remote",
+          "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction"
+        },
+        "status": "waiting",
+        "commandCount": 0,
+        "maxCommands": 10,
+        "tmuxSession": "codex-code"
+      },
+      "queuedAt": "2026-01-07T08:19:48.210Z",
+      "status": "completed",
+      "retries": 0,
+      "maxRetries": 3,
+      "executedAt": "2026-01-07T08:19:52.248Z",
+      "completedAt": "2026-01-07T08:19:55.433Z"
+    },
+    {
+      "id": "mk3r7xxhs34yz9gws6d",
+      "sessionId": "3b54388b-e1fb-4e15-9fcc-c5c726228609",
+      "command": "Write hello world script in rust",
+      "email": {
+        "from": "sidgalt@gmail.com",
+        "subject": "Re: [Codex-Code-Remote #55QLRUC9] Codex Session - Claude-Code-Remote | codex-code",
+        "date": "2026-01-07T08:26:09.000Z"
+      },
+      "session": {
+        "id": "3b54388b-e1fb-4e15-9fcc-c5c726228609",
+        "token": "55QLRUC9",
+        "type": "pty",
+        "created": "2026-01-07T08:25:58.662Z",
+        "expires": "2026-01-08T08:25:58.662Z",
+        "createdAt": 1767774358,
+        "expiresAt": 1767860758,
+        "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+        "notification": {
+          "type": "completed",
+          "project": "Claude-Code-Remote",
+          "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction"
+        },
+        "status": "waiting",
+        "commandCount": 0,
+        "maxCommands": 10,
+        "tmuxSession": "codex-code"
+      },
+      "queuedAt": "2026-01-07T08:26:15.557Z",
+      "status": "completed",
+      "retries": 0,
+      "maxRetries": 3,
+      "executedAt": "2026-01-07T08:26:19.498Z",
+      "completedAt": "2026-01-07T08:26:22.677Z"
+    },
+    {
+      "id": "mk3r8sratq43vunvfkq",
+      "sessionId": "3b54388b-e1fb-4e15-9fcc-c5c726228609",
+      "command": "Now print numbers 1 to 1000",
+      "email": {
+        "from": "sidgalt@gmail.com",
+        "subject": "Re: [Codex-Code-Remote #55QLRUC9] Codex Session - Claude-Code-Remote | codex-code",
+        "date": "2026-01-07T08:26:49.000Z"
+      },
+      "session": {
+        "id": "3b54388b-e1fb-4e15-9fcc-c5c726228609",
+        "token": "55QLRUC9",
+        "type": "pty",
+        "created": "2026-01-07T08:25:58.662Z",
+        "expires": "2026-01-08T08:26:26.674Z",
+        "createdAt": 1767774358,
+        "expiresAt": 1767860786,
+        "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+        "notification": {
+          "type": "completed",
+          "project": "Claude-Code-Remote",
+          "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction"
+        },
+        "status": "waiting",
+        "commandCount": 1,
+        "maxCommands": 10,
+        "tmuxSession": "codex-code",
+        "lastCommand": "2026-01-07T08:26:22.678Z"
+      },
+      "queuedAt": "2026-01-07T08:26:55.510Z",
+      "status": "completed",
+      "retries": 0,
+      "maxRetries": 3,
+      "executedAt": "2026-01-07T08:26:59.507Z",
+      "completedAt": "2026-01-07T08:27:02.674Z"
+    },
+    {
+      "id": "mk3rsu3eu8pm0wmjip",
+      "sessionId": "8ef0ff5f-1420-4688-8bb4-461ccb09dd39",
+      "command": "write hello world in rust",
+      "email": {
+        "from": "sidgalt@gmail.com",
+        "subject": "Re: [Codex-Code-Remote #I62PCF0S] Codex Session - Claude-Code-Remote | codex-code",
+        "date": "2026-01-07T08:42:23.000Z"
+      },
+      "session": {
+        "id": "8ef0ff5f-1420-4688-8bb4-461ccb09dd39",
+        "token": "I62PCF0S",
+        "type": "pty",
+        "created": "2026-01-07T08:42:12.514Z",
+        "expires": "2026-01-08T08:42:12.514Z",
+        "createdAt": 1767775332,
+        "expiresAt": 1767861732,
+        "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+        "notification": {
+          "type": "completed",
+          "project": "Claude-Code-Remote",
+          "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction"
+        },
+        "status": "waiting",
+        "commandCount": 0,
+        "maxCommands": 10,
+        "tmuxSession": "codex-code"
+      },
+      "queuedAt": "2026-01-07T08:42:30.362Z",
+      "status": "completed",
+      "retries": 0,
+      "maxRetries": 3,
+      "executedAt": "2026-01-07T08:42:34.159Z",
+      "completedAt": "2026-01-07T08:42:37.325Z"
+    },
+    {
+      "id": "mk3ru4f9opn2z75gcg",
+      "sessionId": "d070f759-971b-4bd0-9a59-abd3900b3bc1",
+      "command": "write hello world in python",
+      "email": {
+        "from": "sidgalt@gmail.com",
+        "subject": "Re: [Codex-Code-Remote #0D46VH9Z] Codex Session - Claude-Code-Remote | codex-code",
+        "date": "2026-01-07T08:43:23.000Z"
+      },
+      "session": {
+        "id": "d070f759-971b-4bd0-9a59-abd3900b3bc1",
+        "token": "0D46VH9Z",
+        "type": "pty",
+        "created": "2026-01-07T08:43:03.534Z",
+        "expires": "2026-01-08T08:43:03.534Z",
+        "createdAt": 1767775383,
+        "expiresAt": 1767861783,
+        "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+        "notification": {
+          "type": "completed",
+          "project": "Claude-Code-Remote",
+          "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction"
+        },
+        "status": "waiting",
+        "commandCount": 0,
+        "maxCommands": 10,
+        "tmuxSession": "codex-code"
+      },
+      "queuedAt": "2026-01-07T08:43:30.405Z",
+      "status": "completed",
+      "retries": 0,
+      "maxRetries": 3,
+      "executedAt": "2026-01-07T08:43:34.170Z",
+      "completedAt": "2026-01-07T08:43:37.354Z"
+    }
+  ],
+  "lastSaved": "2026-01-07T08:44:19.762Z"
+}

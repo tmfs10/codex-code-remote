@@ -188,6 +188,14 @@ function cleanEmailText(text = '') {
     return deduplicateCommand(command);
 }
 
+function appendCompletionMarker(command = '') {
+    if (!command) return command;
+    if (/Telegram done/i.test(command)) {
+        return command;
+    }
+    return `${command}\n\n After task is completed, write "Telegram done" here`;
+}
+
 // Deduplicate command text (handle cases like: "drink cola okay drink cola okay" -> "drink cola okay")
 function deduplicateCommand(command) {
     if (!command || command.length === 0) {
@@ -448,7 +456,7 @@ async function handleMailMessage(parsed) {
             emailSubject: parsed.subject 
         }, 'Raw email content before cleaning');
         
-        const command = cleanEmailText(parsed.text);
+        const command = appendCompletionMarker(cleanEmailText(parsed.text));
         
         log.debug({ 
             token, 
