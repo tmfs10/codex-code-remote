@@ -1,0 +1,25 @@
+{
+  "id": "c6259a26-9484-45eb-a902-70d10cfba6af",
+  "token": "SARTI2PP",
+  "type": "telegram",
+  "created": "2026-01-06T23:56:06.060Z",
+  "expires": "2026-01-07T23:56:06.060Z",
+  "createdAt": 1767743766,
+  "expiresAt": 1767830166,
+  "tmuxSession": "codex-code",
+  "project": "Claude-Code-Remote",
+  "notification": {
+    "type": "completed",
+    "title": "Codex - Task Completed",
+    "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction",
+    "project": "Claude-Code-Remote",
+    "metadata": {
+      "timestamp": "2026-01-06T23:56:05.857Z",
+      "language": "zh-CN",
+      "userQuestion": "Explain this codebase",
+      "claudeResponse": "Task completed",
+      "tmuxSession": "codex-code",
+      "triggerText": "› Explain this codebase\n  100% context left · ? for shortcuts"
+    }
+  }
+}

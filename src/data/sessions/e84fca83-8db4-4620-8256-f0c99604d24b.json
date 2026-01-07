@@ -1,0 +1,25 @@
+{
+  "id": "e84fca83-8db4-4620-8256-f0c99604d24b",
+  "token": "PG3THGD3",
+  "type": "telegram",
+  "created": "2026-01-07T01:00:34.104Z",
+  "expires": "2026-01-08T01:00:34.104Z",
+  "createdAt": 1767747634,
+  "expiresAt": 1767834034,
+  "tmuxSession": "codex-code",
+  "project": "Claude-Code-Remote",
+  "notification": {
+    "type": "completed",
+    "title": "Codex - Task Completed",
+    "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction",
+    "project": "Claude-Code-Remote",
+    "metadata": {
+      "timestamp": "2026-01-07T01:00:33.899Z",
+      "language": "zh-CN",
+      "userQuestion": "print 1 to 1000 instead",
+      "claudeResponse": "• Working (1s • esc to interrupt)",
+      "tmuxSession": "codex-code",
+      "triggerText": ""
+    }
+  }
+}

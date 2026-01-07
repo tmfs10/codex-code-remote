@@ -1,0 +1,18 @@
+{
+  "id": "8c1c7ead-d603-4e25-8003-5586e98be269",
+  "token": "DNFSQL63",
+  "type": "pty",
+  "created": "2026-01-07T00:31:45.960Z",
+  "expires": "2026-01-08T00:31:45.960Z",
+  "createdAt": 1767745905,
+  "expiresAt": 1767832305,
+  "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+  "notification": {
+    "type": "completed",
+    "project": "Claude-Code-Remote",
+    "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction"
+  },
+  "status": "waiting",
+  "commandCount": 0,
+  "maxCommands": 10
+}

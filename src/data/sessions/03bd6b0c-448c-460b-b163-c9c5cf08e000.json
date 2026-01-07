@@ -1,0 +1,18 @@
+{
+  "id": "03bd6b0c-448c-460b-b163-c9c5cf08e000",
+  "token": "A99DU3JD",
+  "type": "pty",
+  "created": "2026-01-06T23:33:37.028Z",
+  "expires": "2026-01-07T23:33:37.028Z",
+  "createdAt": 1767742417,
+  "expiresAt": 1767828817,
+  "cwd": "/Users/siddjain/workspace/Claude-Code-Remote",
+  "notification": {
+    "type": "completed",
+    "project": "Claude-Code-Remote",
+    "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction"
+  },
+  "status": "waiting",
+  "commandCount": 0,
+  "maxCommands": 10
+}

@@ -1,0 +1,25 @@
+{
+  "id": "ff29dd27-2f28-4880-8c8d-3e7686c6c45c",
+  "token": "0NEN0PFS",
+  "type": "telegram",
+  "created": "2026-01-07T01:00:40.136Z",
+  "expires": "2026-01-08T01:00:40.136Z",
+  "createdAt": 1767747640,
+  "expiresAt": 1767834040,
+  "tmuxSession": "codex-code",
+  "project": "Claude-Code-Remote",
+  "notification": {
+    "type": "completed",
+    "title": "Codex - Task Completed",
+    "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction",
+    "project": "Claude-Code-Remote",
+    "metadata": {
+      "timestamp": "2026-01-07T01:00:39.929Z",
+      "language": "zh-CN",
+      "userQuestion": "print 1 to 1000 instead",
+      "claudeResponse": "• Edited ~/workspace/temp/hello.cpp (+1 -1)\n4    std::cout << \"Hello, world!\" << std::endl;\n5 -  for (int i = 1; i <= 100; ++i) {\n5 +  for (int i = 1; i <= 1000; ++i) {\n6      std::cout << i << std::endl;\n─ Worked for 6s ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────\n• Updated the loop to print 1–1000 in hello.cpp.\nTelegram done",
+      "tmuxSession": "codex-code",
+      "triggerText": ""
+    }
+  }
+}

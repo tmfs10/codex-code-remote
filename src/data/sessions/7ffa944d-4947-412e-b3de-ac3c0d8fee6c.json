@@ -1,0 +1,25 @@
+{
+  "id": "7ffa944d-4947-412e-b3de-ac3c0d8fee6c",
+  "token": "CLUF6I07",
+  "type": "telegram",
+  "created": "2026-01-06T23:25:22.446Z",
+  "expires": "2026-01-07T23:25:22.446Z",
+  "createdAt": 1767741922,
+  "expiresAt": 1767828322,
+  "tmuxSession": "codex-code",
+  "project": "Claude-Code-Remote",
+  "notification": {
+    "type": "completed",
+    "title": "Codex - Task Completed",
+    "message": "[Claude-Code-Remote] Task completed, Codex is waiting for next instruction",
+    "project": "Claude-Code-Remote",
+    "metadata": {
+      "timestamp": "2026-01-06T23:25:22.221Z",
+      "language": "zh-CN",
+      "userQuestion": "Explain this codebase",
+      "claudeResponse": "Task completed",
+      "tmuxSession": "codex-code",
+      "triggerText": "│ >_ OpenAI Codex (v0.77.0)                        │\n│                                                  │\n│ model:     gpt-5.2-codex high   /model to change │\n│ directory: ~/workspace/temp                      │\n╰──────────────────────────────────────────────────╯\n  To get started, describe a task or try one of these commands:\n  /init - create an AGENTS.md file with instructions for Codex\n  /status - show current session configuration\n  /approvals - choose what Codex can do without approval\n  /model - choose what model and reasoning effort to use\n  /review - review any changes and find issues\n› Write a hello world script in python\n• Ran cat <<'PY' > /Users/siddjain/workspace/temp/hello.py\n  │ print(\"Hello, world!\")\n  │ PY\n  └ (no output)\n─ Worked for 4s ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────\n• Created a simple Python hello world script at hello.py.\n  If you want a different filename or added CLI usage, say the word.\n› Explain this codebase\n  100% context left · ? for shortcuts"
+    }
+  }
+}

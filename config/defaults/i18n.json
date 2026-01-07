@@ -1,0 +1,32 @@
+{
+  "zh-CN": {
+    "completed": {
+      "title": "Codex - Task Completed",
+      "message": "[{project}] Task completed, Codex is waiting for next instruction"
+    },
+    "waiting": {
+      "title": "Codex - Waiting for Input", 
+      "message": "[{project}] Codex needs your further guidance"
+    }
+  },
+  "en": {
+    "completed": {
+      "title": "Codex - Task Completed",
+      "message": "[{project}] Task completed, Codex is waiting for next instruction"
+    },
+    "waiting": {
+      "title": "Codex - Waiting for Input",
+      "message": "[{project}] Codex needs your further guidance"
+    }
+  },
+  "ja": {
+    "completed": {
+      "title": "Codex - タスク完了",
+      "message": "[{project}] タスクが完了しました。Codexが次の指示を待っています"
+    },
+    "waiting": {
+      "title": "Codex - 入力待ち",
+      "message": "[{project}] Codexにはあなたのさらなるガイダンスが必要です"
+    }
+  }
+}
